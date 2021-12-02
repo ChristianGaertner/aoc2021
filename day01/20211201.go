@@ -1,10 +1,8 @@
 package day01
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
+	"github.com/ChristianGaertner/aoc2021/common"
 )
 
 type Solver struct{}
@@ -22,7 +20,7 @@ func (Solver) Day() string {
 }
 
 func SolvePartOne() error {
-	numbers, err := _read()
+	numbers, err := common.LoadMValueLines("data/01.txt")
 	if err != nil {
 		return err
 	}
@@ -32,7 +30,7 @@ func SolvePartOne() error {
 
 	fmt.Println("Part One")
 	for i, a := range numbers {
-		if i > 0 && a > numbers[i - 1] {
+		if i > 0 && a.Int(0) > numbers[i - 1].Int(0) {
 			inc++
 		}
 	}
@@ -43,7 +41,7 @@ func SolvePartOne() error {
 }
 
 func SolvePartTwo() error {
-	numbers, err := _read()
+	numbers, err := common.LoadMValueLines("data/01.txt")
 	if err != nil {
 		return err
 	}
@@ -54,7 +52,7 @@ func SolvePartTwo() error {
 
 	fmt.Println("Part Two")
 	for w := 0; w + ws - 1 < len(numbers); w++ {
-		s := numbers[w] + numbers[w+1] + numbers[w+2]
+		s := numbers[w].Int(0) + numbers[w+1].Int(0) + numbers[w+2].Int(0)
 		windows = append(windows, s)
 	}
 
@@ -69,26 +67,4 @@ func SolvePartTwo() error {
 	fmt.Println(inc)
 
 	return nil
-}
-
-func _read() ([]int, error) {
-	file, err := os.Open("data/01.txt")
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var numbers []int
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		raw := scanner.Text()
-
-		n, err := strconv.Atoi(raw)
-		if err != nil {
-			return nil, err
-		}
-		numbers = append(numbers, n)
-	}
-	return numbers, nil
 }

@@ -1,11 +1,8 @@
 package day02
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	"github.com/ChristianGaertner/aoc2021/common"
 )
 
 type Solver struct{}
@@ -23,7 +20,7 @@ func (Solver) Day() string {
 }
 
 func SolvePartOne() error {
-	instructions, err := _read()
+	instructions, err := common.LoadMValueLines("data/02.txt")
 	if err != nil {
 		return err
 	}
@@ -34,13 +31,13 @@ func SolvePartOne() error {
 
 	fmt.Println("Part One")
 	for _, ins := range instructions {
-		switch ins.Dir {
+		switch ins.Str(0) {
 		case "forward":
-			x += ins.Amount
+			x += ins.Int(1)
 		case "down":
-			z += ins.Amount
+			z += ins.Int(1)
 		case "up":
-			z -= ins.Amount
+			z -= ins.Int(1)
 		}
 	}
 
@@ -50,7 +47,7 @@ func SolvePartOne() error {
 }
 
 func SolvePartTwo() error {
-	instructions, err := _read()
+	instructions, err := common.LoadMValueLines("data/02.txt")
 	if err != nil {
 		return err
 	}
@@ -63,14 +60,14 @@ func SolvePartTwo() error {
 
 	fmt.Println("Part Two")
 	for _, ins := range instructions {
-		switch ins.Dir {
+		switch ins.Str(0) {
 		case "forward":
-			x += ins.Amount
-			z += aim * ins.Amount
+			x += ins.Int(1)
+			z += aim * ins.Int(1)
 		case "down":
-			aim += ins.Amount
+			aim += ins.Int(1)
 		case "up":
-			aim -= ins.Amount
+			aim -= ins.Int(1)
 		}
 	}
 
@@ -79,36 +76,3 @@ func SolvePartTwo() error {
 	return nil
 }
 
-type Instr struct {
-	Dir string
-	Amount int
-}
-
-func _read() ([]Instr, error) {
-	file, err := os.Open("data/02.txt")
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var i []Instr
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		raw := scanner.Text()
-
-		parts := strings.Split(raw, " ")
-
-
-
-		n, err := strconv.Atoi(parts[1])
-		if err != nil {
-			return nil, err
-		}
-		i = append(i, Instr{
-			Dir:    parts[0],
-			Amount: n,
-		})
-	}
-	return i, nil
-}
