@@ -29,13 +29,13 @@ func SolvePartOne() error {
 
 	fmt.Println("Part One")
 	for _, ins := range instructions {
-		switch ins.Str(0) {
+		switch ins[0].Str() {
 		case "forward":
-			x += ins.Int(1)
+			x += ins[1].Int()
 		case "down":
-			z += ins.Int(1)
+			z += ins[1].Int()
 		case "up":
-			z -= ins.Int(1)
+			z -= ins[1].Int()
 		}
 	}
 
@@ -56,14 +56,14 @@ func SolvePartTwo() error {
 
 	fmt.Println("Part Two")
 	for _, ins := range instructions {
-		switch ins.Str(0) {
+		switch ins[0].Str() {
 		case "forward":
-			x += ins.Int(1)
-			z += aim * ins.Int(1)
+			x += ins[1].Int()
+			z += aim * ins[1].Int()
 		case "down":
-			aim += ins.Int(1)
+			aim += ins[1].Int()
 		case "up":
-			aim -= ins.Int(1)
+			aim -= ins[1].Int()
 		}
 	}
 

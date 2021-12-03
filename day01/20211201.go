@@ -20,7 +20,7 @@ func (Solver) Day() string {
 }
 
 func SolvePartOne() error {
-	numbers, err := common.LoadMValueLines("data/01.txt")
+	numbers, err := common.LoadSValueLines("data/01.txt")
 	if err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func SolvePartOne() error {
 
 	fmt.Println("Part One")
 	for i, a := range numbers {
-		if i > 0 && a.Int(0) > numbers[i-1].Int(0) {
+		if i > 0 && a.Int() > numbers[i-1].Int() {
 			inc++
 		}
 	}
@@ -40,7 +40,7 @@ func SolvePartOne() error {
 }
 
 func SolvePartTwo() error {
-	numbers, err := common.LoadMValueLines("data/01.txt")
+	numbers, err := common.LoadSValueLines("data/01.txt")
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func SolvePartTwo() error {
 
 	fmt.Println("Part Two")
 	for w := 0; w+ws-1 < len(numbers); w++ {
-		s := numbers[w].Int(0) + numbers[w+1].Int(0) + numbers[w+2].Int(0)
+		s := numbers[w].Int() + numbers[w+1].Int() + numbers[w+2].Int()
 		windows = append(windows, s)
 	}
 

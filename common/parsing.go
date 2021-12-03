@@ -7,26 +7,36 @@ import (
 	"strings"
 )
 
-type MValue []string
+type MValue []SValue
 
-func (m MValue) Str(at int) string {
-	return m[at]
+type SValue string
+
+func (s SValue) Str() string {
+	return string(s)
 }
 
-func (m MValue) Int(at int) int {
-	return m.IntBaseN(at, 10)
+func (s SValue) Int() int {
+	return s.IntBaseN(10)
 }
 
-func (m MValue) IntBaseN(at int, base int) int {
-	n, err := strconv.ParseInt(m[at], base, 32)
+func (s SValue) Int64() int64 {
+	n, err := strconv.ParseInt(string(s), 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return n
+}
+
+func (s SValue) IntBaseN(base int) int {
+	n, err := strconv.ParseInt(string(s), base, 32)
 	if err != nil {
 		panic(err)
 	}
 	return int(n)
 }
 
-func (m MValue) Float(at int) float64 {
-	n, err := strconv.ParseFloat(m[at], 64)
+func (s SValue) Float() float64 {
+	n, err := strconv.ParseFloat(string(s), 64)
 	if err != nil {
 		panic(err)
 	}
@@ -34,18 +44,17 @@ func (m MValue) Float(at int) float64 {
 }
 
 func (m MValue) Strings() []string {
-	return m
+	var r []string
+	for _, s := range m {
+		r = append(r, string(s))
+	}
+	return r
 }
 
 func (m MValue) Ints() []int {
 	var res []int
 	for _, v := range m {
-		n, err := strconv.Atoi(v)
-		if err != nil {
-			panic(err)
-		}
-
-		res = append(res, n)
+		res = append(res, v.Int())
 	}
 	return res
 }
@@ -53,12 +62,7 @@ func (m MValue) Ints() []int {
 func (m MValue) Int64s() []int64 {
 	var res []int64
 	for _, v := range m {
-		n, err := strconv.ParseInt(v, 10, 64)
-		if err != nil {
-			panic(err)
-		}
-
-		res = append(res, n)
+		res = append(res, v.Int64())
 	}
 	return res
 }
@@ -66,12 +70,7 @@ func (m MValue) Int64s() []int64 {
 func (m MValue) Floats() []float64 {
 	var res []float64
 	for _, v := range m {
-		n, err := strconv.ParseFloat(v, 64)
-		if err != nil {
-			panic(err)
-		}
-
-		res = append(res, n)
+		res = append(res, v.Float())
 	}
 	return res
 }
@@ -89,23 +88,29 @@ func LoadMValueLines(path string) ([]MValue, error) {
 	for scanner.Scan() {
 		raw := scanner.Text()
 		parts := strings.Split(raw, " ")
-		res = append(res, parts)
+
+		m := make(MValue, len(parts))
+		for i, p := range parts {
+			m[i] = SValue(p)
+		}
+
+		res = append(res, m)
 	}
 	return res, nil
 }
 
-func LoadStrings(path string) ([]string, error) {
+func LoadSValueLines(path string) ([]SValue, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	var res []string
+	var res []SValue
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		res = append(res, scanner.Text())
+		res = append(res, SValue(scanner.Text()))
 	}
 	return res, nil
 }

@@ -22,7 +22,7 @@ func (Solver) Day() string {
 }
 
 func SolvePartOne() error {
-	numbers, err := common.LoadStrings("data/03.txt")
+	numbers, err := common.LoadSValueLines("data/03.txt")
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func SolvePartOne() error {
 }
 
 func SolvePartTwo() error {
-	numbers, err := common.LoadStrings("data/03.txt")
+	numbers, err := common.LoadSValueLines("data/03.txt")
 	if err != nil {
 		return err
 	}
@@ -54,32 +54,32 @@ func SolvePartTwo() error {
 	ox := f(numbers, 0, true)
 	sc := f(numbers, 0, false)
 
-	fmt.Println(toDecimalS(ox) * toDecimalS(sc))
+	fmt.Println(ox.IntBaseN(2) * sc.IntBaseN(2))
 
 	return nil
 }
 
-func f(lines []string, at int, common bool) string {
+func f(lines []common.SValue, at int, cmmn bool) common.SValue {
 	if len(lines) == 1 {
 		return lines[0]
 	}
 	a, b := mostCommonAtPos(lines, at)
 
 	c := b
-	if common {
+	if cmmn {
 		c = a
 	}
 
-	var res []string
+	var res []common.SValue
 	for _, l := range lines {
 		if string(l[at]) == c {
 			res = append(res, l)
 		}
 	}
-	return f(res, at+1, common)
+	return f(res, at+1, cmmn)
 }
 
-func mostCommonAtPos(lines []string, at int) (string, string) {
+func mostCommonAtPos(lines []common.SValue, at int) (string, string) {
 	var c0, c1 int
 	for _, n := range lines {
 		if n[at] == '0' {
