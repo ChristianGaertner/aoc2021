@@ -25,12 +25,11 @@ func SolvePartOne() error {
 		return err
 	}
 
-
 	var inc int
 
 	fmt.Println("Part One")
 	for i, a := range numbers {
-		if i > 0 && a.Int(0) > numbers[i - 1].Int(0) {
+		if i > 0 && a.Int(0) > numbers[i-1].Int(0) {
 			inc++
 		}
 	}
@@ -51,7 +50,7 @@ func SolvePartTwo() error {
 	var windows []int
 
 	fmt.Println("Part Two")
-	for w := 0; w + ws - 1 < len(numbers); w++ {
+	for w := 0; w+ws-1 < len(numbers); w++ {
 		s := numbers[w].Int(0) + numbers[w+1].Int(0) + numbers[w+2].Int(0)
 		windows = append(windows, s)
 	}
@@ -59,7 +58,7 @@ func SolvePartTwo() error {
 	var inc int
 
 	for i, a := range windows {
-		if i > 0 && a > windows[i - 1] {
+		if i > 0 && a > windows[i-1] {
 			inc++
 		}
 	}

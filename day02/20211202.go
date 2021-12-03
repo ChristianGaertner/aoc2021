@@ -25,9 +25,7 @@ func SolvePartOne() error {
 		return err
 	}
 
-
 	x, z := 0, 0
-
 
 	fmt.Println("Part One")
 	for _, ins := range instructions {
@@ -52,11 +50,9 @@ func SolvePartTwo() error {
 		return err
 	}
 
-
 	x, z := 0, 0
 
 	aim := 0
-
 
 	fmt.Println("Part Two")
 	for _, ins := range instructions {
@@ -75,4 +71,3 @@ func SolvePartTwo() error {
 
 	return nil
 }
-

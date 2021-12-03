@@ -14,11 +14,15 @@ func (m MValue) Str(at int) string {
 }
 
 func (m MValue) Int(at int) int {
-	n, err := strconv.Atoi(m[at])
+	return m.IntBaseN(at, 10)
+}
+
+func (m MValue) IntBaseN(at int, base int) int {
+	n, err := strconv.ParseInt(m[at], base, 32)
 	if err != nil {
 		panic(err)
 	}
-	return n
+	return int(n)
 }
 
 func (m MValue) Float(at int) float64 {
@@ -86,6 +90,22 @@ func LoadMValueLines(path string) ([]MValue, error) {
 		raw := scanner.Text()
 		parts := strings.Split(raw, " ")
 		res = append(res, parts)
+	}
+	return res, nil
+}
+
+func LoadStrings(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var res []string
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		res = append(res, scanner.Text())
 	}
 	return res, nil
 }
